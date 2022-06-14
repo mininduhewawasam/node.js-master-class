@@ -3,8 +3,8 @@
 */
 
 var http = require('http');
-
 var url = require('url');
+var StringDecoder = require('string_decoder').StringDecoder;
 
 const server = http.createServer(function(req, res) {
     
@@ -24,6 +24,22 @@ const server = http.createServer(function(req, res) {
     // get the header as an object
     var headers = req.headers;
 
+    //get the payload if there is any
+    var decoder = new StringDecoder('utf-8');
+    var buffer = '';
+    
+    req.on('data', function(data) {
+        buffer += decoder.write(data);
+    });
+
+    req.on('end', function() {
+        buffer += decoder.end();
+
+        res.end('Hello World 222\n');
+
+        console.log('Request received with this payload: ', buffer);
+    });
+
     // send the response
 
     // log the request path
@@ -31,7 +47,8 @@ const server = http.createServer(function(req, res) {
     res.end('Hello World....\n');
 
     console.log('Request received on path: ' + trimmedPath + ' with method: ' + method + ' and with these query string parameters ' , queryStringObject);
-    console.log('Request recerived with these headers: ' , headers);
+
+    console.log('Request received with these headers: ' , headers);
 });
 
 
