@@ -1,6 +1,5 @@
 /*
 *Primary file for the API
-*
 */
 
 var http = require('http');
