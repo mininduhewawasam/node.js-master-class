@@ -60,13 +60,16 @@ const server = http.createServer( function(req, res) {
             // Convert the payload to a string
             var payloadString = JSON.stringify(payload);
 
-            // Return the response  
+            // Return the response
+            res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode);
-
             res.end(payloadString);
             
+            // Log the request path
             console.log('Returning this response: ', payloadString);
+
         });
+
     });
 });
 
